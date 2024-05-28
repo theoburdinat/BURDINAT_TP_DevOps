@@ -279,3 +279,7 @@ Then you can see your images on [DockerHub](https://hub.docker.com/). I uploaded
 ### 2-2 Document your Github Actions configurations.
 
 .
+
+### 2-3 Document your quality gate configuration.
+
+.
