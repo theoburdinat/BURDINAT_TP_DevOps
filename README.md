@@ -20,7 +20,7 @@
 
 To deploy the database, I ran the following commands :
 
-* Create the Docker image : (from the *postgres* folder)
+* Create the Docker image : (from the *database* folder)
 
     `docker build -t theoburdinat/mydatabase .`
 
@@ -32,7 +32,7 @@ To deploy the database, I ran the following commands :
 
 * Deploy our database container :
 
-    `docker run -p 5432:5432 --name myPostgres -e POSTGRES_USER=theo -e POSTGRES_PASSWORD='pa$$' --network app-network -v '"C:\Users\theob\OneDrive - Fondation EPF\4A\S8\Devops\tp1\postgres\data":/var/lib/postgresql/data' -d theoburdinat/mydatabase`
+    `docker run -p 5432:5432 --name myPostgres -e POSTGRES_USER=theo -e POSTGRES_PASSWORD='pa$$' --network app-network -v '"C:\Users\theob\OneDrive - Fondation EPF\4A\S8\Devops\TP\database\data":/var/lib/postgresql/data' -d theoburdinat/mydatabase`
 
     This command permits to deploy a container from the image created fromm our Dockerfile. We used environment variables to avoid having our credentials in clear text in a file, which isn't exactly top-notch in terms of security. We also connected this container to our network, and created a volume that will permits to save our data, even if our container gets destroyed.
 
@@ -206,9 +206,9 @@ services:
     backend:
         container_name: backend # Set the name of the container
         build:
-            context: ./API/simple-api-student
+            context: ./simple-api
             dockerfile: Dockerfile
-            # Build the image using the Dockerfile located in ./API/simple-api-student
+            # Build the image using the Dockerfile located in ./simple-api
         image: theoburdinat/myapi # Name the image as "theoburdinat/myapi"
         environment: # Set environment variables to make the connection between the database and the API service
             DB_host: database
@@ -224,7 +224,7 @@ services:
     database:
         container_name: database
         build:
-            context: ./postgres
+            context: ./database
             dockerfile: Dockerfile
         image: theoburdinat/mydatabase
         environment: # Environment variables to set up the postgreSQL database
@@ -233,12 +233,12 @@ services:
         networks:
             - app-network
         volumes: # Use a volume to keep our data in all circumstances
-            - ./postgres/data:/var/lib/postgresql/data
+            - ./database/data:/var/lib/postgresql/data
 
     httpd:
         container_name: httpd
         build:
-            context: ./HTTP
+            context: ./httpd
             dockerfile: Dockerfile
         image: theoburdinat/myhttpd
         environment: # Environment variable to make a good connection between the httpd service and the API service
@@ -276,3 +276,6 @@ Then you can see your images on [DockerHub](https://hub.docker.com/). I uploaded
 
 .
 
+### 2-2 Document your Github Actions configurations.
+
+.
