@@ -269,3 +269,10 @@ We can publish our images to make them available for colleagues or other machine
 - `docker push <image name>:<X.X version>` - to push your image on DockerHub.
 
 Then you can see your images on [DockerHub](https://hub.docker.com/). I uploaded `theoburdinat/myapi`, `theoburdinat/myhttpd` and `theoburdinat/mydatabase` on DockerHub.
+
+## PW n°2
+
+### 2-1 What are testcontainers?
+
+.
+
