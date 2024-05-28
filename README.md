@@ -13,6 +13,10 @@
     * [Question 1-3](#1-3-document-docker-compose-most-important-commands)
     * [Question 1-4](#1-4-document-your-docker-compose-file)
     * [Question 1-5](#1-5-document-your-publication-commands-and-published-images-in-dockerhub)
+* [PW n°2](#pw-n2)
+    * [Question 2-1](#2-1-what-are-testcontainers)
+    * [Question 2-2](#2-2-document-your-github-actions-configurations)
+    * [Question 2-3](#2-3-document-your-quality-gate-configuration)
 
 ## PW n°1
 
@@ -274,12 +278,55 @@ Then you can see your images on [DockerHub](https://hub.docker.com/). I uploaded
 
 ### 2-1 What are testcontainers?
 
-.
+Testcontainers is a library offering straightforward and lightweight APIs to bootstrap local development and test dependencies with real services encapsulated in Docker containers. With Testcontainers, you can write tests that rely on the same services used in production, eliminating the need for mocks or in-memory services.
 
 ### 2-2 Document your Github Actions configurations.
 
-.
+Here is my gh action configuration for the CI test :
+
+```yml
+name: CI Test Backend
+
+on:
+  push:
+    branches: [ main, develop ] # Trigger workflow on push to main and develop branches
+  pull_request: # Trigger workflow on pull requests
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-22.04 # Specify the runner environment
+    steps:
+      - uses: actions/checkout@v2.5.0 # Check out the repository code
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3 # Set up Java dev kit
+        with:
+          distribution: 'adopt' # Use AdoptOpenJDK distribution
+          java-version: '17' # Set Java version to 17
+
+      - name: Build and test with Maven
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=tp-devops-tburdinat_tp-devops -Dsonar.organization=tp-devops-tburdinat -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./simple-api/pom.xml
+        # Run Maven build and tests, and perform SonarCloud analysis
+        # -B: Batch mode (no interactive input)
+        # sonar:sonar: Run SonarCloud analysis
+        # -Dsonar.projectKey: Specify the SonarCloud project key
+        # -Dsonar.organization: Specify the SonarCloud organization
+        # -Dsonar.host.url: Specify the SonarCloud server URL
+        # -Dsonar.login: Use SonarCloud authentication token stored in      secrets
+        # --file ./simple-api/pom.xml: Specify path to the Maven pom.xml file
+```
 
 ### 2-3 Document your quality gate configuration.
 
-.
+<div style="text-align: center;">
+    <img src="image-1.png" width="500">
+    <img src="image.png" width="500">
+</div>
+
+We can see on SonarCloud a lot of information about the code quality of our program.
+
+There are two security vulnerabilities in our program, 3 security hotspots and the coverage of the code is at 53.6%. code coverage is a measure used to describe the rate of executed source code in a program when a test suite is run.
+
+We can also see that there is no reliability and maintainability issues in our program, no duplications and no code smells.
+
+Finally we could say that our application is not yet perfect, regarding the code quality, but could be improved with some little changes.
