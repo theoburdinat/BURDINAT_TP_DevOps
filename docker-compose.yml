@@ -40,8 +40,9 @@ services:
         image: theoburdinat/myhttpd
         environment:
             BACKEND_HOST: backend
+            FRONTEND_HOST: frontend
         ports:
-            - "8080:80"
+            - "80:80"
         networks:
             - app-network
         depends_on:
@@ -53,8 +54,6 @@ services:
             context: ./devops-front
             dockerfile: Dockerfile
         image: theoburdinat/myfrontend
-        ports:
-            - "80:80"
         networks:
             - app-network
         depends_on:
