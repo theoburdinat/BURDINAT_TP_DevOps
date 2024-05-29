@@ -335,14 +335,121 @@ Finally we could say that our application is not yet perfect, regarding the code
 
 ### 3-1 Document your inventory and base commands
 
+My inventory is :
+
+```yml
 all:
  vars:
-   ansible_user: centos
-   ansible_ssh_private_key_file: ~/devops_tp3/id_rsa
+   ansible_user: centos #This specifies that the user to log into the remote servers is centos. We always keep the same user.
+   ansible_ssh_private_key_file: ~/devops_tp3/id_rsa # This sets the path to the SSH private key that will be used for authentication.
  children:
-   prod:
-     hosts: theo.burdinat.takima.cloud
+   prod: # We create a subgroup prod
+     hosts: theo.burdinat.takima.cloud #host adress
+```
+
+To test the inventory we can do the command :
+
+```bash
+ansible all -i inventories/setup.yml -m ping
+```
+
+That returns : 
+
+<img src="image-4.png" width="500">
+
+As we got the 'pong' response, everything is well setup !
+
+We also have to remove the Apache server previously installed, to make the port 80 available :
+
+```bash
+ansible all -i inventories/setup.yml -m yum -a "name=httpd state=absent" --become
+```
+
+We run it two times, to make sure changes have been applied :
+
+<img src="image-3.png" width="500">
 
 ### 3-2 Document your playbook
 
+Here is my playbook:
+
+```yml
+- hosts: all # This playbook will run for every hosts defined in the inventory
+  gather_facts: false
+  become: true # Enable privilege escalation
+
+  roles: # Execution of the different roles
+    - docker # Install docker
+    - network # Configure network
+    - database # Set up the database
+    - app # Set up the API
+    - frontend # Set up the frontend
+    - proxy # Set up the proxy
+
+  tasks:
+   - name: Test connection # Test the connexion
+     ping:
+```
+
+The order of the roles is quite important, I check the state of each service before going to the next one. As exemple when the app will be launched, we are sure that the database is already launched.
+
+Database really has to be set up before the backend, and the backend and the frontend really has to be set up before the proxy. Docker has to be set up before everything else.
+
 ### 3-3 Document your docker_container tasks configuration.
+
+I created a role to set up my docker_container. I only use the task folder, with a `main.yml` document that describe the list of my tasks.
+
+My file is :
+
+```yml
+# Install Docker
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+    # device-mapper-persistent-data is a dependency required for Docker. This ensures the latest version is installed.
+
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+    # lvm2 is a dependency required for Docker. This ensures the latest version is installed.
+
+- name: add repo docker
+  command:
+    cmd: sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+    # Adds the Docker repository to yum, so that Docker CE can be installed.
+
+- name: Install Docker
+  yum:
+    name: docker-ce
+    state: present
+    # Installs Docker CE from the added repository. The state 'present' ensures Docker is installed.
+
+- name: Install python3
+  yum:
+    name: python3
+    state: present
+    # Installs Python 3, which is required for managing Docker through Ansible.
+
+- name: Install docker with Python 3
+  pip:
+    name: docker
+    executable: pip3
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    # Uses pip3 to install the Docker module for Python 3. This allows Ansible to interact with Docker.
+    # `ansible_python_interpreter` is set to ensure that Ansible uses the correct Python version.
+
+- name: Make sure Docker is running
+  service: name=docker state=started
+  tags: docker
+  # Ensures that the Docker service is started and running. This is necessary for Docker to be operational.
+  # The `tags: docker` line adds a tag to this task, which can be used to run or skip this task selectively.
+```
+
+This role is run from the playbook with the following command (in WSL) :
+
+```bash
+ansible-playbook -i inventories/setup.yml playbook.yml
+```

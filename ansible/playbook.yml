@@ -13,5 +13,3 @@
   tasks:
    - name: Test connection
      ping:
-
-  
