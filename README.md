@@ -330,3 +330,19 @@ There are two security vulnerabilities in our program, 3 security hotspots and t
 We can also see that there is no reliability and maintainability issues in our program, no duplications and no code smells.
 
 Finally we could say that our application is not yet perfect, regarding the code quality, but could be improved with some little changes.
+
+## PW n°3
+
+### 3-1 Document your inventory and base commands
+
+all:
+ vars:
+   ansible_user: centos
+   ansible_ssh_private_key_file: ~/devops_tp3/id_rsa
+ children:
+   prod:
+     hosts: theo.burdinat.takima.cloud
+
+### 3-2 Document your playbook
+
+### 3-3 Document your docker_container tasks configuration.

@@ -13,6 +13,8 @@ services:
             DB_name: db 
             DB_user: theo
             DB_pass: pa$$
+        ports:
+            - 8080:8080
         networks:
             - app-network
         depends_on:
@@ -41,11 +43,25 @@ services:
         environment:
             BACKEND_HOST: backend
         ports:
+            - "8095:80"
+        networks:
+            - app-network
+        depends_on:
+            - backend
+
+    frontend:
+        container_name: frontend
+        build:
+            context: ./devops-front
+            dockerfile: Dockerfile
+        image: theoburdinat/myfrontend
+        ports:
             - "80:80"
         networks:
             - app-network
         depends_on:
             - backend
+            - database
 
 networks:
     app-network:
