@@ -54,6 +54,8 @@ services:
             context: ./devops-front
             dockerfile: Dockerfile
         image: theoburdinat/myfrontend
+        env: 
+            host: localhost
         networks:
             - app-network
         depends_on:
