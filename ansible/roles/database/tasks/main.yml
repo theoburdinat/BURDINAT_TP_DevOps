@@ -3,7 +3,7 @@
 - name: Launch database
   docker_container:
     name: database
-    image: theoburdinat/mydatabase:v1.0.9
+    image: theoburdinat/mydatabase:v1.0.10
     state: started
     env:
       POSTGRES_USER: theo

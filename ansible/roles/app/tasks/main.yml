@@ -3,7 +3,7 @@
 - name: Launch app
   docker_container:
     name: backend
-    image: theoburdinat/myapi:v1.0.9
+    image: theoburdinat/myapi:v1.0.10
     state: started
     networks:
       - name: network_devops
