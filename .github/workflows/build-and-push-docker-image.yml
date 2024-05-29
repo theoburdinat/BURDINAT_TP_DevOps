@@ -56,3 +56,10 @@ jobs:
           context: ./httpd
           tags: ${{secrets.DOCKERHUB_USERNAME}}/myhttpd:${{ env.NEW_TAG }}
           push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build image and push frontend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./devops-front
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/myfrontend:${{ env.NEW_TAG }}
+          push: ${{ github.ref == 'refs/heads/main' }}
