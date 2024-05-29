@@ -17,6 +17,10 @@
     * [Question 2-1](#2-1-what-are-testcontainers)
     * [Question 2-2](#2-2-document-your-github-actions-configurations)
     * [Question 2-3](#2-3-document-your-quality-gate-configuration)
+* [PW n°3](#pw-n3)
+    * [Question 3-1](#3-1-document-your-inventory-and-base-commands)
+    * [Question 3-2](#3-2-document-your-playbook)
+    * [Question 3-3](#3-3-document-your-docker_container-tasks-configuration)
 
 ## PW n°1
 
