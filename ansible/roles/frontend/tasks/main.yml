@@ -1,0 +1,9 @@
+---
+# Launch frontend
+- name: Launch frontend
+  docker_container:
+    name: frontend
+    image: theoburdinat/myfrontend:v1.0.9
+    state: started
+    networks:
+      - name: network_devops

@@ -1,0 +1,5 @@
+---
+# Create network
+- name: Create a network
+  community.docker.docker_network:
+    name: network_devops

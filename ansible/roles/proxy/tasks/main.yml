@@ -1,0 +1,15 @@
+---
+# Launch proxy
+- name: Launch proxy
+  docker_container:
+    name: httpd
+    image: theoburdinat/myhttpd:v1.0.9
+    state: started
+    networks:
+      - name: network_devops
+    ports:
+      - "80:80"
+    env:
+      BACKEND_HOST: backend
+      FRONTEND_HOST: frontend
+

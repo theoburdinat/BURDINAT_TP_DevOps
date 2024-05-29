@@ -1,0 +1,14 @@
+---
+# launch database
+- name: Launch database
+  docker_container:
+    name: database
+    image: theoburdinat/mydatabase:v1.0.9
+    state: started
+    env:
+      POSTGRES_USER: theo
+      POSTGRES_PASSWORD: pa$$
+    networks:
+      - name: network_devops
+    volumes:
+      - ./data:/var/lib/postgresql/data
