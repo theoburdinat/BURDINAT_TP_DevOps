@@ -3,7 +3,7 @@
 - name: Launch proxy
   docker_container:
     name: httpd
-    image: theoburdinat/myhttpd:v1.0.23
+    image: theoburdinat/myhttpd:v1.0.24
     state: started
     networks:
       - name: network_devops
