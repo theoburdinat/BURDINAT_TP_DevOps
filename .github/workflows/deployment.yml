@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-22.04
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v2.5.0
             - name: Set up Python
               uses: actions/setup-python@v2
               with:
@@ -26,6 +26,7 @@ jobs:
                   mkdir -p ~/.ssh
                   echo "${{ secrets.SSH_SERVER_KEY }}" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
+                  cat ~/.ssh/id_rsa
             - name: Deploy
               run: |
                   ansible-playbook -i ansible/inventories/setup.yml ansible/playbook.yml
