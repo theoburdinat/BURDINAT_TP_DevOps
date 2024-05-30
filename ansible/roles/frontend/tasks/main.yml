@@ -3,7 +3,7 @@
 - name: Launch frontend
   docker_container:
     name: frontend
-    image: theoburdinat/myfrontend:v1.0.22
+    image: theoburdinat/myfrontend:v1.0.23
     state: started
     networks:
       - name: network_devops
